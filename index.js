@@ -7,12 +7,16 @@ app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
 app.use("/api/products",productRoute)
-mongoose.connect("mongodb+srv://keerthananilasha111_db_user:yVDzNJncJBW0d7XO@backenddb.j7d1uvy.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB").then(()=>{console.log("CONNECTED TO DB");
-    app.listen(3000,()=>{
-    console.log("Running On port 3000")
-})
-}).catch(()=>console.log("CONNECTION FAILED"))
+require('dotenv').config();
 
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("CONNECTED TO DB");
+    app.listen(3000, () => {
+      console.log("Running On port 3000");
+    });
+  })
+  .catch(() => console.log("CONNECTION FAILED"));
 
 app.get('/', (req, res) => {
   res.send('Hello World from api')
